@@ -1,6 +1,8 @@
 #include "Game.h"
 
-
+/**
+ * @brief 初始化相关资源
+*/
 void Game::init(std::string title, int width, int height)
 {
     screen_size_ = glm::vec2(width, height);
