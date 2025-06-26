@@ -33,7 +33,11 @@ private:
     Game(const Game& game) = delete;
     Game& operator= (const Game& game) = delete;
 private:
-    bool isRunning = true;
+    bool isRunning_ = true;
+
+    Uint64 fps_ = 60;
+    Uint64 frameDelta_ = 0;    //帧延时(纳秒)
+    float deltaTime_ = 0;      //帧间隔(秒)
 
     glm::vec2 screen_size_ = glm::vec2(0); // 屏幕大小
     bool is_running_ = true; // 游戏是否运行

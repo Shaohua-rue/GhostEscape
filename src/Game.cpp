@@ -33,19 +33,52 @@ void Game::init(std::string title, int width, int height)
     }
     // 设置窗口逻辑分辨率
     SDL_SetRenderLogicalPresentation(renderer_, width, height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+
+    //  计算帧间隔时间
+    frameDelta_ = 1e9 / fps_;
 }
 void Game::run()
 {
-    while (isRunning)
+    while (isRunning_)
     {
+        auto startTime = SDL_GetTicksNS();
         handleEvents();
         update(12.0f);
         render();
+        auto endTime = SDL_GetTicksNS();
+
+        auto elapsedTime = endTime - startTime;
+
+        if(elapsedTime < frameDelta_)
+        {
+            SDL_DelayNS(frameDelta_ - elapsedTime);
+            deltaTime_ = frameDelta_ / 1.0e9;
+        }else{
+            deltaTime_ = elapsedTime / 1.0e9;
+        }
+        SDL_Log("FPS: %f",1.0/deltaTime_);
     }
 
 }
 void Game::clean()
 {
+
+    //释放渲染器和窗口
+    if(renderer_ != nullptr){
+        SDL_DestroyRenderer(renderer_);
+    }
+    if(window_ != nullptr){
+        SDL_DestroyWindow(window_);
+    }
+    //退出Mix
+    Mix_CloseAudio();
+    Mix_Quit();
+
+    //退出TTF
+    TTF_Quit();
+
+    //退出SDL
+    SDL_Quit();
 }
 
 void Game::handleEvents()
@@ -56,7 +89,7 @@ void Game::handleEvents()
         switch (event.type)
         {
             case SDL_EVENT_QUIT:
-                isRunning = false;
+                isRunning_ = false;
                 break;
             default:
                 break;
