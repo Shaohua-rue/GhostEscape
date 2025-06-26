@@ -7,6 +7,7 @@
 #include <SDL3_mixer/SDL_mixer.h>
 #include <glm/glm.hpp>
 
+class Scene;
 class Game
 {
 public:
@@ -44,4 +45,6 @@ private:
 
     SDL_Window* window_ = nullptr; // 窗口
     SDL_Renderer* renderer_ = nullptr; // 渲染器
+
+    Scene* current_scene_ = nullptr;        // 当前场景
 };

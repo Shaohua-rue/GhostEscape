@@ -22,7 +22,8 @@ include_directories(
 
 add_executable(${TARGET}
     src/main.cpp
-    src/Game.cpp
+    src/scene_main.cpp
+    src/core/Game.cpp
 )
 
 target_link_directories(${TARGET} PUBLIC

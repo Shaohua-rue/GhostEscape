@@ -1,5 +1,5 @@
 #include "Game.h"
-
+#include "../scene_main.h"
 /**
  * @brief 初始化相关资源
 */
@@ -36,6 +36,11 @@ void Game::init(std::string title, int width, int height)
 
     //  计算帧间隔时间
     frameDelta_ = 1e9 / fps_;
+    deltaTime_ = frameDelta_ / 1.0e9;
+
+    //创建场景
+    current_scene_ = new SceneMain();
+    current_scene_->init();
 }
 void Game::run()
 {
@@ -43,7 +48,7 @@ void Game::run()
     {
         auto startTime = SDL_GetTicksNS();
         handleEvents();
-        update(12.0f);
+        update(deltaTime_);
         render();
         auto endTime = SDL_GetTicksNS();
 
@@ -62,7 +67,11 @@ void Game::run()
 }
 void Game::clean()
 {
-
+    //删除场景
+    if(current_scene_ != nullptr){
+        current_scene_->clean();
+        delete current_scene_;
+    }
     //释放渲染器和窗口
     if(renderer_ != nullptr){
         SDL_DestroyRenderer(renderer_);
@@ -92,6 +101,7 @@ void Game::handleEvents()
                 isRunning_ = false;
                 break;
             default:
+                current_scene_->handleEvents(event);
                 break;
         }
     }
@@ -99,11 +109,15 @@ void Game::handleEvents()
 
 void Game::update(float deltaTime)
 {
+    current_scene_->update(deltaTime);
 }
 
 void Game::render()
 {
-    
+    SDL_SetRenderDrawColor(renderer_, 0, 0, 0, 255);
+    SDL_RenderClear(renderer_);
+    current_scene_->render();
+    SDL_RenderPresent(renderer_);
 }
 
 
