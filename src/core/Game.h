@@ -24,7 +24,15 @@ public:
     void render();
     void clean();
 
-    
+    //getters and setters
+    glm::vec2 getScreenSize() const
+    {
+        return screen_size_;
+    }
+
+    //工具函数
+    void drawGrid(const glm::vec2& top_left, const glm::vec2& bottom_right,float grid_width, SDL_FColor color); //绘制网格
+
 private:
     Game() = default;
     ~Game()
@@ -33,6 +41,11 @@ private:
     }
     Game(const Game& game) = delete;
     Game& operator= (const Game& game) = delete;
+
+
+
+    
+  
 private:
     bool isRunning_ = true;
 

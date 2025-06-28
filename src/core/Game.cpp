@@ -61,7 +61,6 @@ void Game::run()
         }else{
             deltaTime_ = elapsedTime / 1.0e9;
         }
-        SDL_Log("FPS: %f",1.0/deltaTime_);
     }
 
 }
@@ -120,4 +119,17 @@ void Game::render()
     SDL_RenderPresent(renderer_);
 }
 
+void Game::drawGrid(const glm::vec2& top_left, const glm::vec2& bottom_right,float grid_width, SDL_FColor color)
+{
+    SDL_SetRenderDrawColorFloat(renderer_, color.r, color.g, color.b, color.a);
+
+    for(float x = top_left.x; x < bottom_right.x; x += grid_width){
+        SDL_RenderLine(renderer_, x, top_left.y, x, bottom_right.y);
+    }
+
+    for(float y = top_left.y; y < bottom_right.y; y += grid_width){
+        SDL_RenderLine(renderer_, top_left.x, y, bottom_right.x, y);
+    }
+    SDL_SetRenderDrawColorFloat(renderer_, 0, 0, 0, 1);
+}
 
