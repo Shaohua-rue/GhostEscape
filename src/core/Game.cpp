@@ -119,6 +119,9 @@ void Game::render()
     SDL_RenderPresent(renderer_);
 }
 
+/****
+ * @brief 绘制网格
+ * ****/
 void Game::drawGrid(const glm::vec2& top_left, const glm::vec2& bottom_right,float grid_width, SDL_FColor color)
 {
     SDL_SetRenderDrawColorFloat(renderer_, color.r, color.g, color.b, color.a);
@@ -129,6 +132,24 @@ void Game::drawGrid(const glm::vec2& top_left, const glm::vec2& bottom_right,flo
 
     for(float y = top_left.y; y < bottom_right.y; y += grid_width){
         SDL_RenderLine(renderer_, top_left.x, y, bottom_right.x, y);
+    }
+    SDL_SetRenderDrawColorFloat(renderer_, 0, 0, 0, 1);
+}
+
+/******
+ * @brief 绘制边界
+ * *****/
+void Game::drawBoundary(const glm::vec2& top_left, const glm::vec2& bottom_right, float boundary_width, SDL_FColor color)
+{
+    SDL_SetRenderDrawColorFloat(renderer_, color.r, color.g, color.b, color.a);
+    for(float i = 0; i < boundary_width; i++){
+        SDL_FRect rect = {
+        top_left.x - i,
+        top_left.y - i,
+        bottom_right.x - top_left.x + i * 2,
+        bottom_right.y - top_left.y + i * 2
+        };
+        SDL_RenderRect(renderer_, &rect);
     }
     SDL_SetRenderDrawColorFloat(renderer_, 0, 0, 0, 1);
 }
